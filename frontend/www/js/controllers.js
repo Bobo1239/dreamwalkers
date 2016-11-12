@@ -2,7 +2,15 @@ angular.module('starter.controllers', [])
 
 .controller('DashCtrl', function ($scope) {
   var forecastMin = 0;
-  var forecastMax = 40;
+  var forecastMax = 100;
+
+  function barChartColor(n) {
+    var rangeColor = d3.scale.linear()
+      .domain([0, 100])
+      .range(["red", "green"]);
+
+    return rangeColor(n);
+  }
   $scope.vm = this;
   $scope.vm.options = {
     chart: {
@@ -14,15 +22,17 @@ angular.module('starter.controllers', [])
         bottom: 20,
         left: 30
       },
-      color: ['darkorange'],
+      color: function (d, i) {
+        return barChartColor(d.values.Q3);
+      },
       x: function (d) {
         return d.label;
       },
-      maxBoxWidth: 10,
+      maxBoxWidth: 0,
       yDomain: [forecastMin, forecastMax]
     },
     title: {
-      enable: true,
+      enable: false,
       text: ''
     }
   };
@@ -38,10 +48,13 @@ angular.module('starter.controllers', [])
     values: {
       Q1: 0,
       Q2: 0,
-      Q3: 30
+      Q3: 100
     }
   }];
-  console.log("dash!! ", $scope.vm);
+
+  $scope.drink = function () {
+    $scope.vm.data[0].values.Q3 = $scope.vm.data[0].values.Q3 + 1;
+  }
 })
 
 .controller('ChatsCtrl', function ($scope, Chats) {
