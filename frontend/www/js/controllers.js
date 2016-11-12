@@ -1,6 +1,7 @@
 angular.module('starter.controllers', [])
 
-.controller('DashCtrl', function ($scope, $ionicPopup, $timeout, $state, sleepService,$ionicHistory) {
+.controller('DashCtrl', function ($scope, $ionicPopup, $timeout, $state,
+    sleepService, $ionicHistory) {
     var forecastMin = 0;
     var forecastMax = 100;
 
@@ -94,25 +95,25 @@ angular.module('starter.controllers', [])
     $scope.sleep = function () {
 
       $ionicHistory.nextViewOptions({
-          disableBack: true
-        });
+        disableBack: true
+      });
 
-      sleepService.startSleep()
-      //$scope.vm.data[0].values.Q3 = $scope.vm.data[0].values.Q3 + 1;
+      sleepService.startSleep();
       $state.go('tab.nextView');
     };
   })
-  .controller('sleepingCtrl', function ($scope, $state, sleepService,$ionicHistory,$ionicViewSwitcher) {
+  .controller('sleepingCtrl', function ($scope, $state, sleepService,
+    $ionicHistory, $ionicViewSwitcher) {
     console.log("sleepingCtrl");
     $scope.wakingUp = function () {
       $ionicViewSwitcher.nextDirection('back');
       $ionicHistory.nextViewOptions({
-          disableBack: true
-        });
+        disableBack: true
+      });
 
       sleepService.endSleep();
       $state.go('tab.dash');
-    }
+    };
   })
   .controller('ChatsCtrl', function ($scope, Chats, $state) {
     // With the new view caching in Ionic, Controllers are only called
@@ -124,11 +125,9 @@ angular.module('starter.controllers', [])
     //});
     $scope.myGrade = "";
     $scope.gradeSave = function (theGrade) {
-      $scope.myGrade = theGrade;
+      console.log("send my grade to server ", theGrade);
       $state.go('tab.dash');
     };
-
-
   })
 
 .controller('ChatDetailCtrl', function ($scope, $stateParams, Chats) {
