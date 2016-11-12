@@ -20,9 +20,9 @@ text {
   width:100%!important;
 }
 
-@font-face { 
-font-family: "Rampung"; 
-src: url("Rampung.ttf"); 
+@font-face {
+font-family: "Rampung";
+src: url("Rampung.ttf");
 }
 
 body, h3 {
@@ -30,7 +30,7 @@ body, h3 {
 }
 
 .pane{
-background:url('../img/bg.jpg') no-repeat center center fixed; 
+background:url('../img/bg.jpg') no-repeat center center fixed;
         -webkit-background-size: cover;
         -moz-background-size: cover;
         background-size: cover;
@@ -73,7 +73,7 @@ background:url('../img/bg.jpg') no-repeat center center fixed;
 }
 
 .introbutton.activated {
-  background-color:  rgba(255, 255, 255, 0.4)!important; 
+  background-color:  rgba(255, 255, 255, 0.4)!important;
   opacity:1!important;
 }
 
@@ -85,4 +85,36 @@ background:url('../img/bg.jpg') no-repeat center center fixed;
 	-webkit-border-radius: 0px;
 -moz-border-radius: 0px;
 border-radius: 0px;
+}
+.sensorDataButton {
+  width:100%;
+  margin-top:30px;
+  color:white;
+  border-color:none;
+}
+.back-text, .ion-ios-arrow-back {
+  color: white;
+}
+@-webkit-keyframes rotate {
+    0% {
+    -webkit-transform: rotate(0deg);
+    }
+    83% { /*2.4 / 2.9 = 0.827*/
+    -webkit-transform: rotate(360deg);
+    }
+    100% {
+    -webkit-transform: rotate(360deg);
+    }
+}
+.animatedSun {
+  -webkit-animation-name: rotate;
+  -webkit-animation-duration: 2.9s;
+  -webkit-animation-iteration-count: infinite;
+  -webkit-transition-timing-function: ease-in-out;
+  height: 200px;
+  width: 200px;
+}
+.center {
+  display: block;
+  margin: 10% auto;
 }

@@ -73,16 +73,26 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services',
     })
 
   .state('tab.account', {
-    url: '/account',
-    views: {
-      'tab-account': {
-        templateUrl: 'templates/tab-account.html',
-        controller: 'AccountCtrl'
+      url: '/account',
+      views: {
+        'tab-account': {
+          templateUrl: 'templates/tab-account.html',
+          controller: 'AccountCtrl'
+        }
       }
-    }
-  });
+    })
+    .state('tab.nextView', {
+      url: '/nextView',
+      views: {
+        'tab-dash': {
+          templateUrl: 'templates/nextView.html',
+          controller: 'sleepingCtrl'
+        }
+      }
+    });
 
   // if none of the above states are matched, use this as the fallback
+  //$urlRouterProvider.otherwise('/tab/next');
   $urlRouterProvider.otherwise('/tab/dash');
 
 });
