@@ -54,6 +54,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services',
   })
 
   .state('tab.chats', {
+      cache: false,
       url: '/chats',
       views: {
         'tab-chats': {
