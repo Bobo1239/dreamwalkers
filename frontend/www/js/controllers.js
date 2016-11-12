@@ -102,9 +102,10 @@ angular.module('starter.controllers', [])
       $state.go('tab.nextView');
     };
   })
-  .controller('sleepingCtrl', function ($scope, $state, sleepService,$ionicHistory) {
+  .controller('sleepingCtrl', function ($scope, $state, sleepService,$ionicHistory,$ionicViewSwitcher) {
     console.log("sleepingCtrl");
     $scope.wakingUp = function () {
+      $ionicViewSwitcher.nextDirection('back');
       $ionicHistory.nextViewOptions({
           disableBack: true
         });
