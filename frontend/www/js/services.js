@@ -1,25 +1,21 @@
 angular.module('starter.services', [])
 
-.factory('sleepService', function() {
+.factory('sleepService', function () {
   var sleepstart;
   var sleepend;
 
   return {
-    startSleep: function(){
+    startSleep: function () {
       sleepstart = new Date();
- //     console.log(sleepstart);
     },
-    endSleep: function(){
+    endSleep: function () {
       sleepend = new Date();
-//      console.log(sleepend);
-      passed = Math.floor((sleepend - sleepstart)/ 1000 / 60);
-      console.log(passed);
+      passed = Math.floor((sleepend - sleepstart) / 1000 / 60);
     }
-
-  }
+  };
 })
 
-.factory('Chats', function() {
+.factory('Chats', function () {
   // Might use a resource here that returns a JSON array
 
   // Some fake testing data
@@ -51,13 +47,13 @@ angular.module('starter.services', [])
   }];
 
   return {
-    all: function() {
+    all: function () {
       return chats;
     },
-    remove: function(chat) {
+    remove: function (chat) {
       chats.splice(chats.indexOf(chat), 1);
     },
-    get: function(chatId) {
+    get: function (chatId) {
       for (var i = 0; i < chats.length; i++) {
         if (chats[i].id === parseInt(chatId)) {
           return chats[i];
