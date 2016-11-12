@@ -5,11 +5,17 @@ angular.module('starter.controllers', [])
   var forecastMax = 100;
 
   function barChartColor(n) {
+    var color = ["red", "yellow", "green"];
     var rangeColor = d3.scale.linear()
       .domain([0, 100])
-      .range(["red", "green"]);
-
-    return rangeColor(n);
+      .range([0, 2]);
+    var colorValue = 1;
+    if (rangeColor(n) < 0.7) {
+      colorValue = 0;
+    } else if (rangeColor(n) > 1.5) {
+      colorValue = 2;
+    }
+    return color[colorValue];
   }
   $scope.vm = this;
   $scope.vm.options = {
@@ -53,8 +59,11 @@ angular.module('starter.controllers', [])
   }];
 
   $scope.drink = function () {
+    $scope.vm.data[0].values.Q3 = $scope.vm.data[0].values.Q3 - 1;
+  };
+  $scope.sleep = function () {
     $scope.vm.data[0].values.Q3 = $scope.vm.data[0].values.Q3 + 1;
-  }
+  };
 })
 
 .controller('ChatsCtrl', function ($scope, Chats) {
