@@ -1,4 +1,88 @@
 /* Empty. Add your own CSS if you like */
-.sensorDataButton {
 
+line {
+  display:none;
+}
+
+text {
+  fill: white;
+}
+
+.domain {
+  stroke:white!important;
+}
+
+/*.nv-y {
+  display:none;
+}*/
+
+.nvd3 {
+  width:100%!important;
+}
+
+@font-face { 
+font-family: "Rampung"; 
+src: url("Rampung.ttf"); 
+}
+
+body, h3 {
+	font-family: Rampung;
+}
+
+.pane{
+background:url('../img/bg.jpg') no-repeat center center fixed; 
+        -webkit-background-size: cover;
+        -moz-background-size: cover;
+        background-size: cover;
+}
+
+.bar.bar-light {
+  background-color: transparent; /* or transparent, or background:none */
+}
+.scroll-content {
+  overflow: visible !important;
+}
+
+.tab-nav.tabs {
+	background-color: transparent;
+}
+
+.title.header-item {
+	color:white!important;
+	font-family: 'Lobster', cursive;
+	font-size:1.9em;
+
+}
+
+.platform-android .bar .title {
+    font-size: 1.9em!important;
+    line-height: 44px;
+}
+
+.bar-header {
+    border-bottom-width: 0px!important;
+}
+
+.bar.bar-header {
+  background: rgba(0,0,0,.0);
+  border-bottom-width: 0;
+}
+
+.nav-bar-block {
+	border:none;
+}
+
+.introbutton.activated {
+  background-color:  rgba(255, 255, 255, 0.4)!important; 
+  opacity:1!important;
+}
+
+.introbutton {
+	font-family: Rampung;
+	font-size:1.5em;
+	margin-top: 15px!important;
+	background-color: rgba(0, 0, 0, 0.4)!important;
+	-webkit-border-radius: 0px;
+-moz-border-radius: 0px;
+border-radius: 0px;
 }
