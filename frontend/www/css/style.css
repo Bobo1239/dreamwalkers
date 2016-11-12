@@ -1,1 +1,170 @@
 /* Empty. Add your own CSS if you like */
+
+@media screen and (max-height: 630px) {
+  .abstand {
+        height:30px!important;
+    }
+}
+@media screen and (max-height: 580px) {
+  .abstand {
+        height:10px!important;
+    }
+}
+
+@media screen and (max-height: 525px) {
+  .estgrade {
+        margin-bottom:20px!important;
+    }
+}
+
+.tabs{
+background:none;
+background-color:black;
+}
+
+ion-tabs.tabs-color-active-light .tab-item {
+    color: black;
+    opacity: 0.4;
+}
+
+ion-tabs.tabs-color-active-light .tab-item.tab-item-active {
+    opacity:1!important;
+    color:white;
+}
+
+.platform-android ion-tabs.tabs-color-active-light .tab-item {
+    color: white;
+    opacity: 0.4;
+}
+
+.platform-android .tabs-striped .tabs {
+
+    border-bottom: 1px solid transparent!important;
+}
+
+.back-button > .back-text {
+    display:none!important;
+}
+
+.introbutton:hover {
+  color:white!important;
+}
+
+line {
+  display:none;
+}
+
+text {
+  fill: white;
+}
+
+.domain {
+  stroke:white!important;
+}
+
+/*.nv-y {
+  display:none;
+}*/
+
+.nvd3 {
+  width:100%!important;
+}
+
+@font-face {
+font-family: "Rampung";
+src: url("Rampung.ttf");
+}
+
+body, h3 {
+	font-family: Rampung;
+}
+
+.pane{
+background:url('../img/bg.jpg') no-repeat center center fixed;
+        -webkit-background-size: cover;
+        -moz-background-size: cover;
+        background-size: cover;
+}
+
+.bar.bar-light {
+  background-color: transparent; /* or transparent, or background:none */
+}
+.scroll-content {
+  overflow: visible !important;
+}
+
+.tab-nav.tabs {
+	background-color: transparent;
+}
+
+.title.header-item {
+	color:white!important;
+	font-family: 'Lobster', cursive;
+	font-size:1.9em;
+
+}
+
+.platform-android .bar .title {
+    font-size: 1.9em!important;
+    line-height: 44px;
+}
+
+.bar-header {
+    border-bottom-width: 0px!important;
+}
+
+.bar.bar-header {
+  background: rgba(0,0,0,.0);
+  border-bottom-width: 0;
+}
+
+.nav-bar-block {
+	border:none;
+}
+
+.introbutton.activated {
+  background-color:  rgba(255, 255, 255, 0.4)!important;
+  opacity:1!important;
+}
+
+.introbutton {
+	font-family: Rampung;
+	font-size:1.5em;
+	margin-top: 15px!important;
+	background-color: rgba(0, 0, 0, 0.4)!important;
+	-webkit-border-radius: 0px;
+-moz-border-radius: 0px;
+border-radius: 0px;
+}
+.sensorDataButton {
+  width:100%;
+  margin-top:30px;
+  color:white;
+  border-color:none;
+}
+.back-text, .ion-ios-arrow-back {
+  color: white;
+}
+@-webkit-keyframes rotate {
+    0% {
+    -webkit-transform: rotate(0deg);
+    }
+    83% { /*2.4 / 2.9 = 0.827*/
+    -webkit-transform: rotate(360deg);
+    }
+    100% {
+    -webkit-transform: rotate(360deg);
+    }
+}
+.animatedSun {
+  -webkit-animation-name: rotate;
+  -webkit-animation-duration: 2.9s;
+  -webkit-animation-iteration-count: infinite;
+  -webkit-transition-timing-function: ease-in-out;
+  height: 200px;
+  width: 200px;
+}
+.center {
+  display: block;
+  margin: 10% auto;
+}

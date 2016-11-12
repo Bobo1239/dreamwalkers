@@ -1,14 +1,25 @@
-<ion-view view-title="Dashboard">
-  <ion-content class="padding">
-    <h2>Awesome tips here</h2>
-    <div id="chart1">Bar 1</div>
-    <div id="chart2">Bar 2</div>
-
-    <button class="button button-block button-positive">
+<ion-view view-title="Dreamwalker">
+  <ion-content class="padding" style="padding-left:20px;padding-right:20px;">
+     <div style="background: rgba(0,0,0,.40); padding:10px;margin-top:5px;">
+    <h3 style="color:white;font-size:1.6em; font-weight:200;padding:0;margin:0;text-align:center;">Awesome tips here</h3>
+    </div>
+    <div class="estgrade" style="margin-bottom:50px;color:white;font-size:1em;font-weight:200;text-align:center;margin-top:1px;">Estimated Grade: 1.3</div>
+    <nvd3 options="vm.options" data="vm.data"></nvd3>
+    <!--<button class="button button-block button-positive sensorDataButton" ng-click="sleep()">
       Sleep
     </button>
-    <button class="button button-block button-positive">
+    <button class="button button-block button-positive sensorDataButton" ng-click="drink()">
       Drink
-    </button>
+    </button>-->
+    <div class="abstand" style="height:70px;"></div>
+    <div>
+    <button  class="button introbutton button-icon sensorDataButton" ng-click="drink()" ng-disabled="loginstatus"><i ng-show="loginstatus" class="icon ion-ios-checkmark-empty"></i>
+                Drink
+              </button>
+
+    <button href="#/tab/nextView" class="button introbutton button-icon sensorDataButton" ng-click="sleep()" ng-disabled="loginstatus"><i ng-show="loginstatus" class="icon ion-ios-checkmark-empty"></i>
+                Sleep
+              </button>
+    </div>
   </ion-content>
 </ion-view>

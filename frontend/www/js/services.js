@@ -1,6 +1,33 @@
 angular.module('starter.services', [])
 
-.factory('Chats', function() {
+.factory('sleepService', function ($http) {
+  var sleepstart;
+  var sleepend;
+
+  return {
+    startSleep: function () {
+      sleepstart = new Date();
+    },
+    endSleep: function () {
+      sleepend = new Date();
+      passed = Math.floor((sleepend - sleepstart) / 1000 / 60);
+
+      var urlPOST =
+        "http://127.0.0.1:5000/add_sleep/user_id2/" + passed;
+
+      $http.post(urlPOST)
+        .success(function (data) {
+          console.log("sleep ", data);
+        })
+        .error(function (data) {
+          console.log("error ", data);
+        });
+
+    }
+  };
+})
+
+.factory('Chats', function () {
   // Might use a resource here that returns a JSON array
 
   // Some fake testing data
@@ -32,13 +59,13 @@ angular.module('starter.services', [])
   }];
 
   return {
-    all: function() {
+    all: function () {
       return chats;
     },
-    remove: function(chat) {
+    remove: function (chat) {
       chats.splice(chats.indexOf(chat), 1);
     },
-    get: function(chatId) {
+    get: function (chatId) {
       for (var i = 0; i < chats.length; i++) {
         if (chats[i].id === parseInt(chatId)) {
           return chats[i];
