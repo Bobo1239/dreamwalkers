@@ -1,5 +1,30 @@
 /* Empty. Add your own CSS if you like */
 
+.tabs{
+background:none;
+background-color:black;
+}
+
+ion-tabs.tabs-color-active-light .tab-item {
+    color: black;
+    opacity: 0.4;
+}
+
+ion-tabs.tabs-color-active-light .tab-item.tab-item-active {
+    opacity:1!important;
+    color:white;
+}
+
+.platform-android ion-tabs.tabs-color-active-light .tab-item {
+    color: white;
+    opacity: 0.4;
+}
+
+.platform-android .tabs-striped .tabs {
+
+    border-bottom: 1px solid transparent!important;
+}
+
 .back-button > .back-text {
     display:none!important;
 }
