@@ -53,28 +53,37 @@ class User(Base):
         self.name = name
 
     def current_datum(self, session):
-        return session.query(Datum).filter(Datum.user_id == self.id, Datum.grade == None).last()
+        return session.query(Datum).filter(Datum.user_id == self.id, Datum.grade == None).first()
 
     def create_datum(self, session, debug_creation=datetime.datetime.now()):
         new_datum = Datum(self.id, debug_creation)
         session.add(new_datum)
+        session.commit()
+        # print(new_datum.id)
         self.current_datum_id = new_datum.id
 
     def add_sleep(self, minutes, session, debug_creation=datetime.datetime.now()):
         if self.current_datum(session) == None:
+            # print("WTF")
             self.create_datum(session, debug_creation)
+        # print(self.current_datum_id)
         self.current_datum(session).add_sleep(minutes)
+        session.commit()
 
     def set_grade(self, grade, session, debug_creation=datetime.datetime.now()):
         if self.current_datum(session) == None:
+            print("KJSADKJSAHDAKJD")
             # TODO: warning
             return
-        print(self.current_datum(session).)
+        now = datetime.datetime.now()
+        datum = self.current_datum(session)
+        sleep_percent = datum.sleep_minutes / (float((now - datum.creation).total_seconds()) / 60.)
+        # print("------------------------")
+        # print(sleep_percent * 24.0)
+        # print(grade)
+        # print(self.current_datum(session).id)
         self.current_datum(session).set_grade(grade)
-        # session.add(self.current_datum)
-        # session.commit()
-        # print(self.current_datum.id)
-        self.create_datum(session, debug_creation=debug_creation)
+        # self.create_datum(session, debug_creation=debug_creation)
 
 class Datum(Base):
     __tablename__='data'
@@ -131,19 +140,22 @@ if __name__ == '__main__':
     # # user.add_sleep(15, session)
 
     for i in range(1, 1000):
-       sleep = random.randint(2, 10)
-       days = random.randint(10, 300)
-       creation = datetime.datetime.now() - datetime.timedelta(days)
-       sleep_sum = sleep*days*60;
-       grade = 8./sleep;
+        sleep_h_per_day = 2.0 + random.random() * 6.0
+        days = random.random() * 300.0 + 10.0
+        creation = datetime.datetime.now() - datetime.timedelta(days)
+        sleep_sum = sleep_h_per_day * days * 60.0;
+        grade = 8.0/sleep_h_per_day;
 
-       # print(sleep_sum / (datetime.timedelta(days).total_seconds() / 60))
-       # print("grade: " + str(grade))
-       user.add_sleep(sleep_sum, session, debug_creation=creation)
-       user.set_grade(grade, session, debug_creation=creation)
-    session.commit()
+        # print("===========")
+        # print(24.0 * sleep_sum / (datetime.timedelta(days).total_seconds() / 60))
+        # print("===========")
+        # print("grade: " + str(grade))
+        user.add_sleep(sleep_sum, session, debug_creation=creation)
+        # print(user.current_datum(session).id)
+        user.set_grade(grade, session, debug_creation=creation)
+        # print(user.current_datum(session).id)
+        session.commit()
 
-    # asd
 
 
     # Craete stuff...
@@ -177,7 +189,7 @@ if __name__ == '__main__':
 
     # print(np_array[0])
 
-    asd
+    # asd
 
 
     now = datetime.datetime.now()
@@ -185,18 +197,17 @@ if __name__ == '__main__':
     def preprocess(data):
         # Sort by descending id and delete columns
         for i in range(len(data)):
-            print("aaaaaaaaaaaaaaaaaaaaaaa")
-            print(data[i][0])
-            print(data[i][1])
-            print(data[i][2])
-            print((now - data[i][0]).total_seconds() / 60)
-            print(data[i][1] / (float((now - data[i][0]).total_seconds()) / 60.))
-            print(data[i][2])
-            data[i][1] = (data[i][1] / ((now - data[i][0]).total_seconds() / 60))
+            # print("aaaaaaaaaaaaaaaaaaaaaaa")
+            # print(data[i][0])
+            # print(data[i][1])
+            # print(data[i][2])
+            # print((now - data[i][0]).total_seconds() / 60)
+            # print(data[i][1] / (float((now - data[i][0]).total_seconds()) / 60.))
+            # print(data[i][2])
+            data[i][1] = (float(data[i][1]) / (float((now - data[i][0]).total_seconds()) / 60.0))
         # [r.pop(0) for r in data] # remove creation as it's not needed anymore
         data=data[:,1:-1]
 
-        asd
 
         # for i in data:
             # print(i)
@@ -232,7 +243,7 @@ if __name__ == '__main__':
     input_ = tflearn.input_data(shape=[None, 1])
     linear = tflearn.single_unit(input_)
     regression = tflearn.regression(linear, optimizer='sgd', loss='mean_square',
-                                    metric='R2', learning_rate=0.01)
+                                    metric='R2', learning_rate=0.02)
     m = tflearn.DNN(regression)
     m.fit(processed_data, out, n_epoch=1000, show_metric=True, snapshot_epoch=False)
 
@@ -241,7 +252,7 @@ if __name__ == '__main__':
 
     # model.fit(processed_data, labels, n_epoch=10, batch_size=16, show_metric=True, validation_set=0.1)
 
-    print(m.predict([[0.01], [0.5]]))
+    print(m.predict([[8.0 / 24.0], [2.0 / 24.0]]))
 
     # session.add(node)
     # session.commit()
