@@ -1,7 +1,7 @@
 angular.module('starter.controllers', [])
 
 .controller('DashCtrl', function ($scope, $ionicPopup, $timeout, $state,
-    sleepService, $ionicHistory) {
+    sleepService, $ionicHistory, $http) {
     var forecastMin = 0;
     var forecastMax = 100;
 
@@ -83,6 +83,19 @@ angular.module('starter.controllers', [])
               }
               $scope.vm.data[0].values.Q3 = $scope.vm.data[
                 0].values.Q3 - $scope.data.inputValue;
+
+              var urlPOST =
+                "http://127.0.0.1:5000/add_drink/user_id2/" +
+                $scope.data.inputValue;
+
+              $http.post(urlPOST)
+                .success(function (data) {
+                  console.log("add drink ", data);
+                })
+                .error(function (data) {
+                  console.log("error ", data);
+                });
+
               return $scope.data.inputValue;
             }
           }
@@ -112,10 +125,11 @@ angular.module('starter.controllers', [])
       });
 
       sleepService.endSleep();
+
       $state.go('tab.dash');
     };
   })
-  .controller('ChatsCtrl', function ($scope, Chats, $state) {
+  .controller('ChatsCtrl', function ($scope, Chats, $state, $http) {
     // With the new view caching in Ionic, Controllers are only called
     // when they are recreated or on app start, instead of every page change.
     // To listen for when this page is active (for example, to refresh data),
@@ -125,7 +139,17 @@ angular.module('starter.controllers', [])
     //});
     $scope.myGrade = "";
     $scope.gradeSave = function (theGrade) {
-      console.log("send my grade to server ", theGrade);
+      var urlPOST =
+        "http://127.0.0.1:5000/set_grade/user_id2/" + theGrade;
+
+      $http.post(urlPOST)
+        .success(function (data) {
+          console.log("grade ", data);
+        })
+        .error(function (data) {
+          console.log("error ", data);
+        });
+
       $state.go('tab.dash');
     };
   })
