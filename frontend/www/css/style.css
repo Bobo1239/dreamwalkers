@@ -1,5 +1,13 @@
 /* Empty. Add your own CSS if you like */
 
+.back-button > .back-text {
+    display:none!important;
+}
+
+.introbutton:hover {
+  color:white!important;
+}
+
 line {
   display:none;
 }

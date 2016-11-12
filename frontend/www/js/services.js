@@ -1,5 +1,24 @@
 angular.module('starter.services', [])
 
+.factory('sleepService', function() {
+  var sleepstart;
+  var sleepend;
+
+  return {
+    startSleep: function(){
+      sleepstart = new Date();
+ //     console.log(sleepstart);
+    },
+    endSleep: function(){
+      sleepend = new Date();
+//      console.log(sleepend);
+      passed = Math.floor((sleepend - sleepstart)/ 1000 / 60);
+      console.log(passed);
+    }
+
+  }
+})
+
 .factory('Chats', function() {
   // Might use a resource here that returns a JSON array
 

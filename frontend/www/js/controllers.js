@@ -1,6 +1,6 @@
 angular.module('starter.controllers', [])
 
-.controller('DashCtrl', function ($scope, $ionicPopup, $timeout, $state) {
+.controller('DashCtrl', function ($scope, $ionicPopup, $timeout, $state, sleepService,$ionicHistory) {
     var forecastMin = 0;
     var forecastMax = 100;
 
@@ -92,13 +92,24 @@ angular.module('starter.controllers', [])
       });
     };
     $scope.sleep = function () {
-      $scope.vm.data[0].values.Q3 = $scope.vm.data[0].values.Q3 + 1;
+
+      $ionicHistory.nextViewOptions({
+          disableBack: true
+        });
+
+      sleepService.startSleep()
+      //$scope.vm.data[0].values.Q3 = $scope.vm.data[0].values.Q3 + 1;
       $state.go('tab.nextView');
     };
   })
-  .controller('sleepingCtrl', function ($scope, $state) {
+  .controller('sleepingCtrl', function ($scope, $state, sleepService,$ionicHistory) {
     console.log("sleepingCtrl");
     $scope.wakingUp = function () {
+      $ionicHistory.nextViewOptions({
+          disableBack: true
+        });
+
+      sleepService.endSleep();
       $state.go('tab.dash');
     }
   })
