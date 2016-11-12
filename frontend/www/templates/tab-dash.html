@@ -1,13 +1,11 @@
 <ion-view view-title="Dashboard">
   <ion-content class="padding">
     <h2>Awesome tips here</h2>
-    <div id="chart1">Bar 1</div>
-    <div id="chart2">Bar 2</div>
-
-    <button class="button button-block button-positive">
+    <nvd3 options="vm.options" data="vm.data"></nvd3>
+    <button class="button button-block button-positive sensorDataButton">
       Sleep
     </button>
-    <button class="button button-block button-positive">
+    <button class="button button-block button-positive sensorDataButton">
       Drink
     </button>
   </ion-content>
