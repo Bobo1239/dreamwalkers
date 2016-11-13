@@ -1,3 +1,4 @@
+var isDemo = false;
 angular.module('starter.controllers', [])
 
 .controller('DashCtrl', function ($scope, $ionicPopup, $timeout, $state,
@@ -83,11 +84,14 @@ angular.module('starter.controllers', [])
               }
               $scope.vm.data[0].values.Q3 = $scope.vm.data[
                 0].values.Q3 - $scope.data.inputValue;
-
+              //var isDemo = false;
               var urlPOST =
                 "http://dreamwalkers.cloudapp.net/add_drink/1/" +
                 $scope.data.inputValue;
-
+              if (isDemo) {
+                urlPOST =
+                  "http://dreamwalkers.cloudapp.net/add_drink/1/demo";
+              }
               $http.post(urlPOST)
                 .success(function (data) {
                   console.log("add drink ", data);
@@ -138,9 +142,16 @@ angular.module('starter.controllers', [])
     //$scope.$on('$ionicView.enter', function(e) {
     //});
     $scope.myGrade = "";
+    //var isDemo = false;
     $scope.gradeSave = function (theGrade) {
-      var urlPOST =
-        "http://dreamwalkers.cloudapp.net/set_grade/1/" + theGrade;
+      console.log(isDemo);
+      var urlPOST = "http://dreamwalkers.cloudapp.net/set_grade/1/" +
+        theGrade;
+      if (isDemo) {
+        urlPOST =
+          "http://dreamwalkers.cloudapp.net/set_grade/1/demo";
+      }
+
 
       $http.post(urlPOST)
         .success(function (data) {

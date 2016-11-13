@@ -1,3 +1,4 @@
+var isDemo = false;
 angular.module('starter.services', [])
 
 .factory('sleepService', function ($http) {
@@ -9,12 +10,16 @@ angular.module('starter.services', [])
       sleepstart = new Date();
     },
     endSleep: function () {
+
       sleepend = new Date();
       passed = Math.floor((sleepend - sleepstart) / 1000 / 60);
-
       var urlPOST =
         "http://dreamwalkers.cloudapp.net/add_sleep/1/" + passed;
 
+      if (isDemo) {
+        urlPOST =
+          "http://dreamwalkers.cloudapp.net/add_sleep/1/demo";
+      }
       $http.post(urlPOST)
         .success(function (data) {
           console.log("sleep ", data);
