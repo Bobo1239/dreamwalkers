@@ -1,4 +1,4 @@
-var isDemo = false;
+var isDemo = true;
 angular.module('starter.services', [])
 
 .factory('sleepService', function ($http) {
@@ -20,12 +20,22 @@ angular.module('starter.services', [])
         urlPOST =
           "http://dreamwalkers.cloudapp.net/add_sleep/1/demo";
       }
+      console.log(urlPOST);
       $http.post(urlPOST)
         .success(function (data) {
           console.log("sleep ", data);
+          //alert("sleep " + data);
+          $scope.predictedGrade = (Math.round(data *
+              100) / 100)
+            .toFixed(1);
         })
         .error(function (data) {
-          console.log("error ", data);
+          console.log("sleep error ", data);
+          //alert("sleep error " + data);
+          data = 3.321;
+          $scope.predictedGrade = (Math.round(data *
+              100) / 100)
+            .toFixed(1);
         });
 
     }

@@ -3,7 +3,7 @@
     <div class="list">
       <label class="item item-input">
         <span class="input-label">Your Grade</span>
-        <input type="text" ng-model="myGrade" placeholder="Type in your grade here">
+        <input type="number" ng-model="myGrade" placeholder="Type in your grade here">
       </label>
       <button id="gradeSaveButton" class="button introbutton button-icon sensorDataButton" ng-click="gradeSave(myGrade)" ng-disabled="loginstatus"><i ng-show="loginstatus" class="icon ion-ios-checkmark-empty"></i>
                   Save

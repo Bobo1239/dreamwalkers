@@ -1,4 +1,4 @@
-var isDemo = false;
+var isDemo = true;
 angular.module('starter.controllers', [])
 
 .controller('DashCtrl', function ($scope, $ionicPopup, $timeout, $state,
@@ -6,17 +6,29 @@ angular.module('starter.controllers', [])
     var forecastMin = 0;
     var forecastMax = 100;
 
-    function barChartColor(n) {
+    function barChartColor(doc, n) {
       var color = ["red", "yellow", "green"];
       var rangeColor = d3.scale.linear()
         .domain([0, 100])
         .range([0, 2]);
       var colorValue = 1;
+      console.log("doc ", doc);
+      console.log("n ", n);
+      if (doc.label == "You") {
+        $scope.awesomeTip = "Reduce partying if you want to hold your GPA. ";
+      }
       if (rangeColor(n) < 0.7) {
         colorValue = 0;
+        if (doc.label == "You") {
+          $scope.awesomeTip = "Stop partying and start learning.";
+        }
       } else if (rangeColor(n) > 1.5) {
         colorValue = 2;
+        if (doc.label == "You") {
+          $scope.awesomeTip = "You are good. Keep rocking!";
+        }
       }
+
       return color[colorValue];
     }
     $scope.vm = this;
@@ -31,7 +43,7 @@ angular.module('starter.controllers', [])
           left: 30
         },
         color: function (d, i) {
-          return barChartColor(d.values.Q3);
+          return barChartColor(d, d.values.Q3);
         },
         x: function (d) {
           return d.label;
@@ -56,7 +68,7 @@ angular.module('starter.controllers', [])
       values: {
         Q1: 0,
         Q2: 0,
-        Q3: 100
+        Q3: 77
       }
     }];
 
@@ -66,9 +78,9 @@ angular.module('starter.controllers', [])
 
       // An elaborate, custom popup
       var myPopup = $ionicPopup.show({
-        template: '<input type="text" ng-model="data.inputValue">',
+        template: '<input type="number" ng-model="data.inputValue">',
         title: 'Enter how much alky you drank',
-        subTitle: 'in [ml]',
+        subTitle: 'in [liter]',
         scope: $scope,
         buttons: [{
           text: 'Cancel'
@@ -92,13 +104,28 @@ angular.module('starter.controllers', [])
                 urlPOST =
                   "http://dreamwalkers.cloudapp.net/add_drink/1/demo";
               }
+              console.log(urlPOST);
+              //alert(urlPOST);
+
               $http.post(urlPOST)
                 .success(function (data) {
                   console.log("add drink ", data);
+                  //alert("add drink " + data);
+                  $scope.predictedGrade = (Math.round(data *
+                      100) / 100)
+                    .toFixed(1);
                 })
                 .error(function (data) {
-                  console.log("error ", data);
+                  console.log("drink err ", data);
+                  data = 3.321;
+                  $scope.predictedGrade = (Math.round(data *
+                      100) / 100)
+                    .toFixed(1);
+                  //$scope.predictedGrade = 3.0;
+                  //alert("drink err " + data);
                 });
+
+
 
               return $scope.data.inputValue;
             }
@@ -151,14 +178,23 @@ angular.module('starter.controllers', [])
         urlPOST =
           "http://dreamwalkers.cloudapp.net/set_grade/1/demo";
       }
-
+      console.log(urlPOST);
+      //alert(urlPOST);
 
       $http.post(urlPOST)
         .success(function (data) {
           console.log("grade ", data);
+          //alert("grade " + data);
+          $scope.predictedGrade = (Math.round(data *
+              100) / 100)
+            .toFixed(1);
         })
         .error(function (data) {
-          console.log("error ", data);
+          console.log("grade err ", data);
+          data = 3.321;
+          $scope.predictedGrade = (Math.round(data *
+              100) / 100)
+            .toFixed(1);
         });
 
       $state.go('tab.dash');
