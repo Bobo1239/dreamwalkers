@@ -85,7 +85,7 @@ angular.module('starter.controllers', [])
                 0].values.Q3 - $scope.data.inputValue;
 
               var urlPOST =
-                "http://dreamwalkers.cloudapp.net/add_drink/user_id2/" +
+                "http://dreamwalkers.cloudapp.net/add_drink/1/" +
                 $scope.data.inputValue;
 
               $http.post(urlPOST)

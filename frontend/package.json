@@ -1,7 +1,7 @@
 {
   "name": "frontend",
-  "version": "1.1.1",
-  "description": "frontend: An Ionic project",
+  "version": "1.1.2",
+  "description": "Dream Walker",
   "dependencies": {
     "gulp": "^3.5.6",
     "gulp-sass": "^2.0.4",
