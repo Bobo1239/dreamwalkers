@@ -127,7 +127,7 @@ def set_grade(user_id, grade):
 
 if __name__ == '__main__':
     print("Start!")
-    engine = create_engine('postgres://localhost/dreamwalkers', echo=False)
+    engine = create_engine('postgres:///dreamwalkers', echo=False)
 
     Datum.__table__.drop(engine)
     User.__table__.drop(engine)
