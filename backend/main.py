@@ -103,8 +103,10 @@ class Datum(Base):
         return np.array([self.creation, self.sleep_minutes, self.drink_liters, self.grade])
 
     def predict_grade(self):
-        time_delta = float((datetime.datetime.now() - self.creation).total_seconds()) / 60.0
-        return model.predict([[float(self.sleep_minutes) / time_delta]])[0]
+        time_delta_min = float((datetime.datetime.now() - self.creation).total_seconds()) / 60.0
+        time_delta_days = time_delta_min / 60.0 / 24.0
+        return model.predict([[float(self.sleep_minutes) / time_delta_min, \
+                               self.drink_liters / time_delta_days]])[0]
 
 
 session = None
