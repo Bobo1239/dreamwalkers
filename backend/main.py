@@ -1,3 +1,11 @@
+########################
+# WARNING: shitty code #
+########################
+
+# (no time)
+
+# Don't forget the reverse proxy from port 80 (out) to port 8080 (in)
+
 import psycopg2
 import datetime
 import random
@@ -11,21 +19,32 @@ from sqlalchemy.orm.query import Query
 from sqlalchemy.orm.collections import attribute_mapped_collection
 from sqlalchemy.orm import load_only
 
+# Global variables (bad practice...)
 
-Base = declarative_base()
+session = None
+model = None
 
-# Preprocessing function
+# Preprocessing function for the neural network
 # Takes a [[creation: DateTime, sleep_min: minutes, grade: float]] and
 # outputs a [[sleep_percentage: float]] (array of arrays for future extensibility (e.g. alcohol))
 def preprocess(data):
+    now = datetime.datetime.now()
     for i in range(len(data)):
         creation = data[i][0]
         data[i][1] = (float(data[i][1]) / (float((now - creation).total_seconds()) / 60.0))
         data[i][2] = (float(data[i][2]) / (float((now - creation).total_seconds()) / 60.0 / 60.0 / 24.0))
-    data=data[:,1:-1] # slice creation and grade away
+    data=data[:,1:-1] # slice fields creation and grade away
     return np.array(data, dtype=np.float32)
 
-class User(Base):
+
+##############
+# Data model #
+##############
+
+Base = declarative_base()
+
+class User(Base):#
+
     __tablename__='user'
     id = Column(Integer, primary_key=True)
     name = Column(String(50), nullable=False)
@@ -108,8 +127,9 @@ class Datum(Base):
         return model.predict([[float(self.sleep_minutes) / time_delta_min, \
                                self.drink_liters / time_delta_days]])[0]
 
-session = None
-model = None
+###############
+# WEB SERVICE #
+###############
 
 from flask import Flask
 app = Flask(__name__)
@@ -176,23 +196,19 @@ if __name__ == '__main__':
         user.set_grade(grade, session)
     session.commit()
 
-
-    # Craete stuff...
-
+    # Query all data
     data = session.query(Datum) \
                   .filter(Datum.grade != None) \
                   .options(load_only("creation", "sleep_minutes", "grade")) \
                   .all()
 
+    # Transform data into desired form
     data = np.array([r.to_numpy_array() for r in data])
-
-    now = datetime.datetime.now()
-
     processed_data = preprocess(data)
-
     grades = [[a] for a in data[:, -1]]
 
-    #input: sleep_percentage and liters per day
+    # Neural network
+    # Input: sleep_percentage and liters per day
     net = tflearn.input_data(shape=[None, 2])
     net = tflearn.fully_connected(net, 1)
     regression = tflearn.regression(net, optimizer='sgd', loss='mean_square',
@@ -200,7 +216,7 @@ if __name__ == '__main__':
     model = tflearn.DNN(regression)
     model.fit(processed_data, grades, n_epoch=1000, show_metric=True, snapshot_epoch=False)
 
+    # print(model.predict([[8.0 / 24.0, 0.0], [2.0 / 24.0, 3.0]]))
 
-    print(model.predict([[8.0 / 24.0, 0.0], [2.0 / 24.0, 3.0]]))
-
+    # Start web service
     app.run(host='0.0.0.0', port=8080)
