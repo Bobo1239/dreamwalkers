@@ -85,7 +85,7 @@ angular.module('starter.controllers', [])
                 0].values.Q3 - $scope.data.inputValue;
 
               var urlPOST =
-                "http://127.0.0.1:5000/add_drink/user_id2/" +
+                "http://dreamwalkers.cloudapp.net/add_drink/user_id2/" +
                 $scope.data.inputValue;
 
               $http.post(urlPOST)
@@ -140,7 +140,7 @@ angular.module('starter.controllers', [])
     $scope.myGrade = "";
     $scope.gradeSave = function (theGrade) {
       var urlPOST =
-        "http://127.0.0.1:5000/set_grade/user_id2/" + theGrade;
+        "http://dreamwalkers.cloudapp.net/set_grade/1/" + theGrade;
 
       $http.post(urlPOST)
         .success(function (data) {

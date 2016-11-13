@@ -13,7 +13,7 @@ angular.module('starter.services', [])
       passed = Math.floor((sleepend - sleepstart) / 1000 / 60);
 
       var urlPOST =
-        "http://127.0.0.1:5000/add_sleep/user_id2/" + passed;
+        "http://dreamwalkers.cloudapp.net/add_sleep/1/" + passed;
 
       $http.post(urlPOST)
         .success(function (data) {
