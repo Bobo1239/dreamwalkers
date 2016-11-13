@@ -11,7 +11,6 @@ from sqlalchemy.orm.query import Query
 from sqlalchemy.orm.collections import attribute_mapped_collection
 from sqlalchemy.orm import load_only
 
-from tflearn.data_utils import load_csv
 
 Base = declarative_base()
 
