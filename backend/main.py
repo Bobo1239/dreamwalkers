@@ -108,7 +108,6 @@ class Datum(Base):
         return model.predict([[float(self.sleep_minutes) / time_delta_min, \
                                self.drink_liters / time_delta_days]])[0]
 
-
 session = None
 model = None
 
@@ -121,7 +120,7 @@ def get_user(id):
 @app.route('/add_sleep/<user_id>/<amount_min>', methods=['GET', 'POST'])
 def add_sleep(user_id, amount_min):
     if amount_min == "demo":
-        return str(model.predict([[5.0 / 24.0]])[0])
+        return str(model.predict([[8.0 / 24.0, 1.0]])[0])
     else:
         user = get_user(int(user_id))
         user.add_sleep(int(amount_min), session)
@@ -130,8 +129,11 @@ def add_sleep(user_id, amount_min):
 
 @app.route('/add_drink/<user_id>/<liters>', methods=['GET', 'POST'])
 def add_drink(user_id, liters):
-    get_user(int(user_id)).add_drink(int(liters), session)
-    return str(user.predict_grade())
+    if amount_min == "demo":
+        return str(model.predict([[5.0 / 24.0, 1.0]])[0])
+    else:
+        get_user(int(user_id)).add_drink(int(liters), session)
+        return str(user.predict_grade())
 
 @app.route('/set_grade/<user_id>/<grade>', methods=['GET', 'POST'])
 def set_grade(user_id, grade):
