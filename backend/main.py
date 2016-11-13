@@ -127,7 +127,7 @@ def set_grade(user_id, grade):
 
 if __name__ == '__main__':
     print("Start!")
-    engine = create_engine('postgres://localhost/dreamwalkers', echo=False)
+    engine = create_engine('postgres:///dreamwalkers', echo=False)
 
     Datum.__table__.drop(engine)
     User.__table__.drop(engine)
@@ -177,4 +177,4 @@ if __name__ == '__main__':
 
     print(model.predict([[8.0 / 24.0], [2.0 / 24.0]]))
 
-    app.run()
+    app.run(host='0.0.0.0', port=80)
