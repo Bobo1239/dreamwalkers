@@ -1,7 +1,8 @@
+var isDemo = false;
 angular.module('starter.controllers', [])
 
 .controller('DashCtrl', function ($scope, $ionicPopup, $timeout, $state,
-    sleepService, $ionicHistory) {
+    sleepService, $ionicHistory, $http) {
     var forecastMin = 0;
     var forecastMax = 100;
 
@@ -83,6 +84,22 @@ angular.module('starter.controllers', [])
               }
               $scope.vm.data[0].values.Q3 = $scope.vm.data[
                 0].values.Q3 - $scope.data.inputValue;
+              //var isDemo = false;
+              var urlPOST =
+                "http://dreamwalkers.cloudapp.net/add_drink/1/" +
+                $scope.data.inputValue;
+              if (isDemo) {
+                urlPOST =
+                  "http://dreamwalkers.cloudapp.net/add_drink/1/demo";
+              }
+              $http.post(urlPOST)
+                .success(function (data) {
+                  console.log("add drink ", data);
+                })
+                .error(function (data) {
+                  console.log("error ", data);
+                });
+
               return $scope.data.inputValue;
             }
           }
@@ -112,10 +129,11 @@ angular.module('starter.controllers', [])
       });
 
       sleepService.endSleep();
+
       $state.go('tab.dash');
     };
   })
-  .controller('ChatsCtrl', function ($scope, Chats, $state) {
+  .controller('ChatsCtrl', function ($scope, Chats, $state, $http) {
     // With the new view caching in Ionic, Controllers are only called
     // when they are recreated or on app start, instead of every page change.
     // To listen for when this page is active (for example, to refresh data),
@@ -124,8 +142,25 @@ angular.module('starter.controllers', [])
     //$scope.$on('$ionicView.enter', function(e) {
     //});
     $scope.myGrade = "";
+    //var isDemo = false;
     $scope.gradeSave = function (theGrade) {
-      console.log("send my grade to server ", theGrade);
+      console.log(isDemo);
+      var urlPOST = "http://dreamwalkers.cloudapp.net/set_grade/1/" +
+        theGrade;
+      if (isDemo) {
+        urlPOST =
+          "http://dreamwalkers.cloudapp.net/set_grade/1/demo";
+      }
+
+
+      $http.post(urlPOST)
+        .success(function (data) {
+          console.log("grade ", data);
+        })
+        .error(function (data) {
+          console.log("error ", data);
+        });
+
       $state.go('tab.dash');
     };
   })

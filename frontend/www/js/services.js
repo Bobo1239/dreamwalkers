@@ -1,6 +1,7 @@
+var isDemo = false;
 angular.module('starter.services', [])
 
-.factory('sleepService', function () {
+.factory('sleepService', function ($http) {
   var sleepstart;
   var sleepend;
 
@@ -9,27 +10,27 @@ angular.module('starter.services', [])
       sleepstart = new Date();
     },
     endSleep: function () {
+
       sleepend = new Date();
       passed = Math.floor((sleepend - sleepstart) / 1000 / 60);
+      var urlPOST =
+        "http://dreamwalkers.cloudapp.net/add_sleep/1/" + passed;
+
+      if (isDemo) {
+        urlPOST =
+          "http://dreamwalkers.cloudapp.net/add_sleep/1/demo";
+      }
+      $http.post(urlPOST)
+        .success(function (data) {
+          console.log("sleep ", data);
+        })
+        .error(function (data) {
+          console.log("error ", data);
+        });
+
     }
   };
 })
-
-.factory('Service', function () {
-  var sleepstart;
-  var sleepend;
-
-  return {
-    startSleep: function () {
-      sleepstart = new Date();
-    },
-    endSleep: function () {
-      sleepend = new Date();
-      passed = Math.floor((sleepend - sleepstart) / 1000 / 60);
-    }
-  };
-})
-
 
 .factory('Chats', function () {
   // Might use a resource here that returns a JSON array
