@@ -177,4 +177,4 @@ if __name__ == '__main__':
 
     print(model.predict([[8.0 / 24.0], [2.0 / 24.0]]))
 
-    app.run(host='0.0.0.0', port=80)
+    app.run(host='0.0.0.0', port=8080)
