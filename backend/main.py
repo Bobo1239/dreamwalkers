@@ -19,7 +19,9 @@ Base = declarative_base()
 # outputs a [[sleep_percentage: float]] (array of arrays for future extensibility (e.g. alcohol))
 def preprocess(data):
     for i in range(len(data)):
-        data[i][1] = (float(data[i][1]) / (float((now - data[i][0]).total_seconds()) / 60.0))
+        creation = data[i][0]
+        data[i][1] = (float(data[i][1]) / (float((now - creation).total_seconds()) / 60.0))
+        data[i][2] = (float(data[i][2]) / (float((now - creation).total_seconds()) / 60.0 / 60.0 / 24.0))
     data=data[:,1:-1] # slice creation and grade away
     return np.array(data, dtype=np.float32)
 
@@ -47,6 +49,12 @@ class User(Base):
         self.current_datum(session).add_sleep(minutes)
         session.commit()
 
+    def add_drink(self, minutes, session, debug_creation=datetime.datetime.now()):
+        if self.current_datum(session) == None:
+            self.create_datum(session, debug_creation)
+        self.current_datum(session).add_drink(minutes)
+        session.commit()
+
     def set_grade(self, grade, session, debug_creation=datetime.datetime.now()):
         if self.current_datum(session) == None:
             # TODO: warning
@@ -65,27 +73,34 @@ class Datum(Base):
     user_id = Column(Integer, ForeignKey(User.id), nullable=False)
     user = relationship("User", uselist=False)
     creation = Column(DateTime, nullable=False)
-    sleep_minutes = Column(Integer, nullable=False)
+    sleep_minutes = Column(Float, nullable=False)
+    drink_liters = Column(Float, nullable=False)
     grade = Column(Float, nullable=True)
 
     def __init__(self, user_id, creation = datetime.datetime.now()):
         self.user_id = user_id
         self.creation = creation
         self.sleep_minutes = 0
+        self.drink_liters = 0
         self.grade = None
 
     def add_sleep(self, minutes):
-        # TODO: add sleep_minutes to value in db
         if self.grade == None:
             self.sleep_minutes += minutes
         # else:
-            # TODO; log warning
+            # TODO; shouldn't be reachable; log warning
+
+    def add_drink(self, liters):
+        if self.grade == None:
+            self.drink_liters += liters
+        # else:
+            # TODO; shouldn't be reachable; log warning
 
     def set_grade(self, grade):
         self.grade = grade
 
     def to_numpy_array(self):
-        return np.array([self.creation, self.sleep_minutes, self.grade])
+        return np.array([self.creation, self.sleep_minutes, self.drink_liters, self.grade])
 
     def predict_grade(self):
         time_delta = float((datetime.datetime.now() - self.creation).total_seconds()) / 60.0
@@ -111,9 +126,9 @@ def add_sleep(user_id, amount_min):
         session.commit()
         return str(user.predict_grade())
 
-@app.route('/add_drink/<user_id>/<amount_milliliter>', methods=['GET', 'POST'])
-def add_drink(user_id, amount_milliliter):
-    get_user(int(user_id)).add_drink(int(amount_milliliter), session)
+@app.route('/add_drink/<user_id>/<liters>', methods=['GET', 'POST'])
+def add_drink(user_id, liters):
+    get_user(int(user_id)).add_drink(int(liters), session)
     return str(user.predict_grade())
 
 @app.route('/set_grade/<user_id>/<grade>', methods=['GET', 'POST'])
@@ -141,14 +156,20 @@ if __name__ == '__main__':
 
     print("Creating Dataset!")
     for i in range(1, 1000):
-        sleep_h_per_day = 2.0 + random.random() * 6.0
         days = random.random() * 300.0 + 10.0
         creation = datetime.datetime.now() - datetime.timedelta(days)
-        sleep_sum = sleep_h_per_day * days * 60.0;
+        sleep_h_per_day = 2.0 + random.random() * 6.0
+        # 0.0 - 3.0 liters per day
+        liters_per_day = random.random() * 3.0
+        liters = liters_per_day * days;
+        sleep_sum = sleep_h_per_day * days * 60.0
         # Sleep more -> get better grade
-        grade = 8.0/sleep_h_per_day;
+        grade = 8.0/sleep_h_per_day
+        # grade += liters_per_day; cap at 5.0
+        grade = min(grade + liters_per_day, 5.0)
         user.add_sleep(sleep_sum, session, debug_creation=creation)
-        user.set_grade(grade, session, debug_creation=creation)
+        user.add_drink(liters, session)
+        user.set_grade(grade, session)
     session.commit()
 
 
@@ -165,16 +186,17 @@ if __name__ == '__main__':
 
     processed_data = preprocess(data)
 
-    grades = [a for a in data[:, -1]]
+    grades = [[a] for a in data[:, -1]]
 
-    input_ = tflearn.input_data(shape=[None, 1])
-    linear = tflearn.single_unit(input_)
-    regression = tflearn.regression(linear, optimizer='sgd', loss='mean_square',
-                                    metric='R2', learning_rate=0.02)
+    #input: sleep_percentage and liters per day
+    net = tflearn.input_data(shape=[None, 2])
+    net = tflearn.fully_connected(net, 1)
+    regression = tflearn.regression(net, optimizer='sgd', loss='mean_square',
+                                    metric='R2', learning_rate=0.01)
     model = tflearn.DNN(regression)
     model.fit(processed_data, grades, n_epoch=1000, show_metric=True, snapshot_epoch=False)
 
 
-    print(model.predict([[8.0 / 24.0], [2.0 / 24.0]]))
+    print(model.predict([[8.0 / 24.0, 0.0], [2.0 / 24.0, 3.0]]))
 
     app.run(host='0.0.0.0', port=8080)
