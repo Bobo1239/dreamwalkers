@@ -129,7 +129,7 @@ def add_sleep(user_id, amount_min):
 
 @app.route('/add_drink/<user_id>/<liters>', methods=['GET', 'POST'])
 def add_drink(user_id, liters):
-    if amount_min == "demo":
+    if liters == "demo":
         return str(model.predict([[5.0 / 24.0, 1.0]])[0])
     else:
         get_user(int(user_id)).add_drink(int(liters), session)
